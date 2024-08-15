@@ -1,0 +1,26 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: My workflow
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+jobs:
+  build:
+    outputs:
+      output1: $${{ steps.custom-action.outputs.output1 }}
+    steps:
+      - uses: gradinsky-cloudbees/example-action@v1.0.0
+        name: custom
+        id: custom-action
+        with:
+          url: https://cloudbees.com
+  job2:
+    steps:
+      - uses: docker://alpine:3.18
+        name: echo
+        env:
+          OUTPUT1: $${{needs.build.outputs.output1}}
+        run: echo "$OUTPUT1"
+    needs: build
