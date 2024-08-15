@@ -8,9 +8,11 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    outputs:
+      output1: $${{ steps.custom-action.outputs.output1 }}
     steps:
       - uses: gradinsky-cloudbees/example-action@v1.0.0
-        name: custom
+        name: custom action things
         id: custom-action
         with:
           url: https://cloudbees.com
